@@ -88,7 +88,6 @@ class MMSeg:
         # 获取chunk，每个chunk中最多三个词
         ret = []
         first_match_words = self.__get_start_words(sentence)
-        # if can't find any match word
         if not first_match_words:
             return ret
         else:
