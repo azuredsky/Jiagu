@@ -65,7 +65,8 @@ class MMSeg:
         # 加载字频字典
         self.chrs_dic = self._load_word_freq()
 
-    def _load_word_freq(self):
+    @staticmethod
+    def _load_word_freq():
         chrs_dic = defaultdict()
         with open(add_curr_dir('data/chars.dic'), "r", encoding="utf-8") as f:
             for line in f:
@@ -92,11 +93,13 @@ class MMSeg:
         return ret
 
     def cws(self, sentence):
-        '''
-         * cws - 中文分词
-         * @sentence:	[in]中文句子输入
-         * @return:		[out]返回的分词之后的列表
-        '''
+        """
+
+        :param sentence: str
+            中文句子输入
+        :return: list
+            返回的分词之后的列表
+        """
         final_ret = []
         while sentence:
             chunks = self.__get_chunks(sentence)

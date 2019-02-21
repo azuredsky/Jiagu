@@ -8,7 +8,6 @@
  * Description : TextRank算法实现
  special thanks to https://github.com/ArtistScript/FastTextRank
 """
-import os
 import sys
 import numpy as np
 from jiagu import utils

@@ -61,8 +61,7 @@ def cut_filter_words(cutted_sentences, stopwords, use_stopwords=False):
     return sentences, sents
 
 
-def psegcut_filter_words(cutted_sentences, stopwords,
-                         use_stopwords=True, use_speech_tags_filter=True):
+def psegcut_filter_words(cutted_sentences, stopwords, use_stopwords=True):
     sents = []
     sentences = []
     for sent in cutted_sentences:
