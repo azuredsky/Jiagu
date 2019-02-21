@@ -65,8 +65,7 @@ class MMSeg:
         # 加载字频字典
         self.chrs_dic = self._load_word_freq()
 
-    @staticmethod
-    def _load_word_freq():
+    def _load_word_freq(self):
         chrs_dic = defaultdict()
         with open(add_curr_dir('data/chars.dic'), "r", encoding="utf-8") as f:
             for line in f:
@@ -75,41 +74,55 @@ class MMSeg:
                     chrs_dic.setdefault(key, int(value))
         return chrs_dic
 
-    def __get_chunks(self, sentence, depth=3):
-        ret = []
-
-        # 递归调用
-        def __get_chunks_it(sentence, num, segs):
-            if (num == 0 or not sentence) and segs:
-                ret.append(Chunk(segs, self.chrs_dic))
+    def __get_start_words(self, sentence):
+        match_words = self.words_dic.get_matches(sentence)
+        if sentence:
+            if not match_words:
+                return [sentence[0]]
             else:
-                match_word = self.words_dic.get_matches(sentence)
-                if not match_word:
-                    __get_chunks_it(sentence[1:], num - 1, segs + [sentence[0]])
-                for word in match_word:
-                    __get_chunks_it(sentence[len(word):], num - 1, segs + [word])
+                return match_words
+        else:
+            return False
 
-        __get_chunks_it(sentence, depth, [])
+    def __get_chunks(self, sentence):
+        # 获取chunk，每个chunk中最多三个词
+        ret = []
+        first_match_words = self.__get_start_words(sentence)
+        # if can't find any match word
+        if not first_match_words:
+            return ret
+        else:
+            for word in first_match_words:
+                first_tmp = [word]
+                second_match_words = self.__get_start_words(sentence[len(word):])
+                if not second_match_words:
+                    ret.append(Chunk(first_tmp, self.chrs_dic))
+                else:
+                    for word in second_match_words:
+                        first_tmp += [word]
+                        third_match_words = self.__get_start_words(sentence[len(word):])
+                        if not third_match_words:
+                            ret.append(Chunk(first_tmp, self.chrs_dic))
+                        else:
+                            for word in third_match_words:
+                                first_tmp += [word]
+                                ret.append(Chunk(first_tmp, self.chrs_dic))
         return ret
 
     def cws(self, sentence):
         """
-
-        :param sentence: str
-            中文句子输入
-        :return: list
-            返回的分词之后的列表
+        :param sentence: 输入的数据
+        :return:         返回的分词生成器
         """
-        final_ret = []
         while sentence:
             chunks = self.__get_chunks(sentence)
             best = max(chunks)
-            final_ret.append(best.words[0])
-            sentence = sentence[len(best.words[0]):]
-        return final_ret
+            word = best.words[0]
+            sentence = sentence[len(word):]
+            yield word
 
 
 if __name__ == "__main__":
     mmseg = MMSeg()
-    print(mmseg.cws("武汉市长江大桥最近已经崩塌了"))
-    print(mmseg.cws("人要是行,干一行行一行一行行行行行要是不行干一行不行一行一行不行行行不行"))
+    print(list(mmseg.cws("武汉市长江大桥最近已经崩塌了")))
+    print(list(mmseg.cws("人要是行干一行行一行")))
