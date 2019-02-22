@@ -1,17 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
- * Copyright (C) 2018 OwnThink Technologies Inc.
+ * Copyright (C) 2018.
  *
- * Name        : mmseg.py
+ * Name        : test_mmseg.py
  * Author      : Leo <1162441289@qq.com>
  * Version     : 0.01
  * Description : mmseg分词方法测试
 """
 
 import unittest
-import re
-from jiagu import utils
 import jiagu
 
 
@@ -28,9 +26,9 @@ class TestTextRank(unittest.TestCase):
         self.assertTrue(list(words) == ['人', '要是', '行', '干', '一行', '行', '一行'])
 
     def test_seg_two(self):
-        sentence = "武汉市长江大桥最近已经崩塌了"
+        sentence = "武汉市长江大桥上的日落非常好看，很喜欢看日出日落。"
         words = jiagu.seg(sentence, model="mmseg")
-        self.assertTrue(list(words) == ['武汉市', '长江大桥', '最近', '已经', '崩塌', '了'])
+        self.assertTrue(list(words) == ['武汉市', '长江大桥', '上', '的', '日落', '非常', '好看', '，', '很', '喜欢', '看', '日出', '日落', '。'])
 
 
 if __name__ == '__main__':

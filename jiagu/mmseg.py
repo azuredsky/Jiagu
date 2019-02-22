@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
- * Copyright (C) 2018 OwnThink Technologies Inc.
+ * Copyright (C) 2018 OwnThink.
  *
  * Name        : mmseg.py
  * Author      : Leo <1162441289@qq.com>
@@ -123,5 +123,5 @@ class MMSeg:
 
 if __name__ == "__main__":
     mmseg = MMSeg()
-    print(list(mmseg.cws("武汉市长江大桥最近已经崩塌了")))
+    print(list(mmseg.cws("武汉市长江大桥上的日落非常好看，很喜欢看日出日落。")))
     print(list(mmseg.cws("人要是行干一行行一行")))
