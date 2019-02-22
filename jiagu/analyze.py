@@ -153,4 +153,4 @@ class Analyze(object):
         return self.summarize_model.summarize(text, topsen)
 
     def findword(self, input, output):
-        findword.train_corpus_words(input, output)
+        findword.new_word_find(input, output)
