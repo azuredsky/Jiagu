@@ -87,25 +87,16 @@ class MMSeg:
     def __get_chunks(self, sentence):
         # 获取chunk，每个chunk中最多三个词
         ret = []
-        first_match_words = self.__get_start_words(sentence)
-        if not first_match_words:
-            return ret
-        else:
-            for first_word in first_match_words:
-                tmp_seg_words = [first_word]
-                second_match_words = self.__get_start_words(sentence[len(first_word):])
-                if not second_match_words:
-                    ret.append(Chunk(tmp_seg_words, self.chrs_dic))
-                else:
-                    for second_word in second_match_words:
-                        tmp_seg_words += [second_word]
-                        third_match_words = self.__get_start_words(sentence[len(second_word):])
-                        if not third_match_words:
-                            ret.append(Chunk(tmp_seg_words, self.chrs_dic))
-                        else:
-                            for third_word in third_match_words:
-                                tmp_seg_words += [third_word]
-                                ret.append(Chunk(tmp_seg_words, self.chrs_dic))
+
+        def _iter_chunk(sentence, num, tmp_seg_words):
+            match_words = self.__get_start_words(sentence)
+            if (not match_words or num == 0) and tmp_seg_words:
+                ret.append(Chunk(tmp_seg_words, self.chrs_dic))
+            else:
+                for word in match_words:
+                    _iter_chunk(sentence[len(word):], num - 1, tmp_seg_words + [word])
+        _iter_chunk(sentence, num=3, tmp_seg_words=[])
+
         return ret
 
     def cws(self, sentence):
@@ -123,5 +114,5 @@ class MMSeg:
 
 if __name__ == "__main__":
     mmseg = MMSeg()
-    print(list(mmseg.cws("武汉市长江大桥上的日落非常好看，很喜欢看日出日落。")))
+    print(list(mmseg.cws("武汉市长江大桥上的日落，很喜欢看日出日落。")))
     print(list(mmseg.cws("人要是行干一行行一行")))
