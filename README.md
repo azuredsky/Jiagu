@@ -67,7 +67,7 @@ words = jiagu.seg([text, text, text], input='batch') # 批量分词，加快速�
 print(words)
 
 words = jiagu.seg(text, model='mmseg') # 使用mmseg算法进行分词
-print(words)
+print(list(words))
 ```
 
 自定义分词模型（将单独提供msr、pku、cnc等分词标准）
