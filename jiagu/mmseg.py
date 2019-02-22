@@ -92,20 +92,20 @@ class MMSeg:
             return ret
         else:
             for first_word in first_match_words:
-                first_tmp = [first_word]
+                tmp_seg_words = [first_word]
                 second_match_words = self.__get_start_words(sentence[len(first_word):])
                 if not second_match_words:
-                    ret.append(Chunk(first_tmp, self.chrs_dic))
+                    ret.append(Chunk(tmp_seg_words, self.chrs_dic))
                 else:
                     for second_word in second_match_words:
-                        first_tmp += [second_word]
+                        tmp_seg_words += [second_word]
                         third_match_words = self.__get_start_words(sentence[len(second_word):])
                         if not third_match_words:
-                            ret.append(Chunk(first_tmp, self.chrs_dic))
+                            ret.append(Chunk(tmp_seg_words, self.chrs_dic))
                         else:
                             for third_word in third_match_words:
-                                first_tmp += [third_word]
-                                ret.append(Chunk(first_tmp, self.chrs_dic))
+                                tmp_seg_words += [third_word]
+                                ret.append(Chunk(tmp_seg_words, self.chrs_dic))
         return ret
 
     def cws(self, sentence):
