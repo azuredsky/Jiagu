@@ -7,7 +7,7 @@
  * Version     : 0.01
  * Description : 新词发现算法实现
  special thanks to 
- http://blog.csdn.net/xiaokang06/article/details/50616983
+ http://www.matrix67.com/blog/archives/5044
  https://github.com/zoulala/New_words_find
 """
 import re
