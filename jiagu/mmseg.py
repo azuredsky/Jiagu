@@ -106,8 +106,7 @@ class MMSeg:
         """
         while sentence:
             chunks = self.__get_chunks(sentence)
-            best = max(chunks)
-            word = best.words[0]
+            word = max(chunks).words[0]
             sentence = sentence[len(word):]
             yield word
 
@@ -115,4 +114,4 @@ class MMSeg:
 if __name__ == "__main__":
     mmseg = MMSeg()
     print(list(mmseg.cws("武汉市长江大桥上的日落，很喜欢看日出日落。")))
-    print(list(mmseg.cws("人要是行干一行行一行")))
+    print(list(mmseg.cws("")))
